@@ -18,14 +18,15 @@ def parsePrice(p):
 #input your keyword as a str that is all lowercase with no spaces
 keyword="arcteryx"
 #input your maximum price
-max_price=400
+max_price=1000
 #input your sizes as an array of lowercase, one letter strs
 sizes=["s","m","l"]
+#input your category (jackets,pants,etc) as a lowercase str
+category="pants"
+
 pagen=1
-
-
 while pagen<30:
-    URL="https://www.geartrade.com/clothing/mens-clothing/mens-jackets?sort=new&page="+str(pagen)
+    URL="https://www.geartrade.com/clothing/mens-clothing/mens-"+category+"?sort=new&page="+str(pagen)
     page=requests.get(URL)
 
     soup=BeautifulSoup(page.content,"html.parser")
