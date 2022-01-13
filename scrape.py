@@ -1,6 +1,7 @@
 import requests
 import sys
-from PyQt5.QtWidgets import QLineEdit,QComboBox,QGridLayout,QLabel,QApplication,QWidget, QPushButton, QProgressBar, QTextBrowser
+from PyQt5.QtWidgets import QLineEdit,QComboBox,QGridLayout,QLabel,QApplication,QWidget, QPushButton, QProgressBar, \
+    QTextBrowser
 from PyQt5 import QtGui
 from bs4 import BeautifulSoup
 
@@ -28,7 +29,7 @@ def search():
         sizes[i]=sizes[i][0]
     category = cat.currentText().lower()
     pagen=1
-    while pagen<30:
+    while pagen<10:
         URL="https://www.geartrade.com/clothing/mens-clothing/mens-"+category+"?searchTerm="+keyword.replace(" ","+")+"&sort=new&page="+str(pagen)
         page=requests.get(URL)
 
@@ -44,10 +45,9 @@ def search():
                 item_size=piece.find("div",class_="product-card__brand").text
                 if str(item_size[1]).lower() in sizes:
                     item_link=links[c]
-                    res.append(item_name.strip())
+                    res.append("<a href="+item_link+">"+item_name.strip()+"</a>")
                     res.append(item_price.strip())
                     res.append(item_size.strip())
-                    res.append("<a href="+item_link+">"+item_link+"</a>")
                     res.append("")
                     res.append("---------------")
                     res.append("")
@@ -75,7 +75,7 @@ pri=QLineEdit()
 res=QTextBrowser()
 res.setOpenExternalLinks(True)
 pro=QProgressBar()
-pro.setMaximum(30)
+pro.setMaximum(10)
 sear=QPushButton("Search")
 sear.clicked.connect(search)
 cat.addItems(["Jackets","Pants","Shirts","Hats"])
