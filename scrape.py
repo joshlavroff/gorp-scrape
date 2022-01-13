@@ -1,6 +1,6 @@
 import requests
 import sys
-from PyQt5.QtWidgets import QLineEdit,QComboBox,QGridLayout,QLabel,QApplication,QWidget, QPushButton, QTextEdit, QProgressBar, QTextBrowser
+from PyQt5.QtWidgets import QLineEdit,QComboBox,QGridLayout,QLabel,QApplication,QWidget, QPushButton, QProgressBar, QTextBrowser
 from PyQt5 import QtGui
 from bs4 import BeautifulSoup
 
@@ -23,7 +23,9 @@ def parsePrice(p):
 def search():
     keyword = trim(key.text())
     max_price = float(pri.text())
-    sizes = ["s", "m", "l"]
+    sizes =siz.text().lower().split(",")
+    for i in range(len(sizes)):
+        sizes[i]=sizes[i][0]
     category = cat.currentText().lower()
     pagen=1
     while pagen<30:
@@ -62,12 +64,14 @@ app=QApplication(sys.argv)
 window=QWidget()
 window.setWindowTitle('GorpScrape')
 window.setWindowIcon(QtGui.QIcon("gs.png"))
-window.setGeometry(100,100,460,560)
+window.setGeometry(100,100,660,660)
 window.move(60,15)
 layout=QGridLayout()
 cat=QComboBox()
 key=QLineEdit()
+key.setPlaceholderText("Enter the product or keyword you would like to search")
 siz=QLineEdit()
+siz.setPlaceholderText("Enter sizes separated by commas")
 pri=QLineEdit()
 res=QTextBrowser()
 res.setOpenExternalLinks(True)
