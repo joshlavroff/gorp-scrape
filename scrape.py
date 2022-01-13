@@ -29,7 +29,7 @@ def search():
     category = cat.currentText().lower()
     pagen=1
     while pagen<30:
-        URL="https://www.geartrade.com/clothing/mens-clothing/mens-"+category+"?sort=new&page="+str(pagen)
+        URL="https://www.geartrade.com/clothing/mens-clothing/mens-"+category+"?searchTerm="+keyword+"&sort=new&page="+str(pagen)
         page=requests.get(URL)
 
         soup=BeautifulSoup(page.content,"html.parser")
@@ -39,19 +39,18 @@ def search():
         c=0
         for piece in names:
             item_name=piece.find("div",class_="product-card__name").text
-            if keyword in trim(item_name.strip().lower()):
-                item_price=str(piece.find("div",class_="product-card__price").text)
-                if parsePrice(item_price)<=max_price:
-                    item_size=piece.find("div",class_="product-card__brand").text
-                    if str(item_size[1]).lower() in sizes:
-                        item_link=links[c]
-                        res.append(item_name.strip())
-                        res.append(item_price.strip())
-                        res.append(item_size.strip())
-                        res.append("<a href="+item_link+">"+item_link+"</a>")
-                        res.append("")
-                        res.append("---------------")
-                        res.append("")
+            item_price=str(piece.find("div",class_="product-card__price").text)
+            if parsePrice(item_price)<=max_price:
+                item_size=piece.find("div",class_="product-card__brand").text
+                if str(item_size[1]).lower() in sizes:
+                    item_link=links[c]
+                    res.append(item_name.strip())
+                    res.append(item_price.strip())
+                    res.append(item_size.strip())
+                    res.append("<a href="+item_link+">"+item_link+"</a>")
+                    res.append("")
+                    res.append("---------------")
+                    res.append("")
 
             c+=1
         pagen+=1
