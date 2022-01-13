@@ -9,7 +9,7 @@ def trim(s):
     """Trims given str down to alphanumeric characters"""
     trimmed=""
     for st in s:
-        if st.isalnum():
+        if st.isalnum() or st==" ":
             trimmed+=st.lower()
     return trimmed
 
@@ -29,7 +29,7 @@ def search():
     category = cat.currentText().lower()
     pagen=1
     while pagen<30:
-        URL="https://www.geartrade.com/clothing/mens-clothing/mens-"+category+"?searchTerm="+keyword+"&sort=new&page="+str(pagen)
+        URL="https://www.geartrade.com/clothing/mens-clothing/mens-"+category+"?searchTerm="+keyword.replace(" ","+")+"&sort=new&page="+str(pagen)
         page=requests.get(URL)
 
         soup=BeautifulSoup(page.content,"html.parser")
