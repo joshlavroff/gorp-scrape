@@ -1,6 +1,6 @@
 import requests
 import sys
-from PyQt5.QtWidgets import QLineEdit,QComboBox,QGridLayout,QLabel,QApplication,QWidget, QPushButton, QTextEdit
+from PyQt5.QtWidgets import QLineEdit,QComboBox,QGridLayout,QLabel,QApplication,QWidget, QPushButton, QTextEdit, QProgressBar, QTextBrowser
 from PyQt5 import QtGui
 from bs4 import BeautifulSoup
 
@@ -43,13 +43,17 @@ def search():
                     item_size=piece.find("div",class_="product-card__brand").text
                     if str(item_size[1]).lower() in sizes:
                         item_link=links[c]
-                        print(item_name.strip())
-                        print(item_price.strip())
-                        print(item_size.strip())
-                        print(item_link)
+                        res.append(item_name.strip())
+                        res.append(item_price.strip())
+                        res.append(item_size.strip())
+                        res.append("<a href="+item_link+">"+item_link+"</a>")
+                        res.append("")
+                        res.append("---------------")
+                        res.append("")
 
             c+=1
         pagen+=1
+        pro.setValue(pagen)
 
 
 
@@ -58,14 +62,17 @@ app=QApplication(sys.argv)
 window=QWidget()
 window.setWindowTitle('GorpScrape')
 window.setWindowIcon(QtGui.QIcon("gs.png"))
-window.setGeometry(100,100,280,80)
+window.setGeometry(100,100,460,560)
 window.move(60,15)
 layout=QGridLayout()
 cat=QComboBox()
 key=QLineEdit()
 siz=QLineEdit()
 pri=QLineEdit()
-res=QTextEdit()
+res=QTextBrowser()
+res.setOpenExternalLinks(True)
+pro=QProgressBar()
+pro.setMaximum(30)
 sear=QPushButton("Search")
 sear.clicked.connect(search)
 cat.addItems(["Jackets","Pants","Shirts","Hats"])
@@ -79,6 +86,7 @@ layout.addWidget(siz,2,1)
 layout.addWidget(pri,3,1)
 layout.addWidget(sear,4,0,1,2)
 layout.addWidget(res,0,3,5,2)
+layout.addWidget(pro,5,0,1,5)
 window.setLayout(layout)
 window.show()
 sys.exit(app.exec_())
