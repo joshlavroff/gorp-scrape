@@ -52,9 +52,7 @@ def search():
         pagen+=1
         pro.setValue(pagen)
     data = {"Name": na, "Size": si, "Price": pr, "Average List Price": lp}
-    print(data)
     d=pd.DataFrame(data)
-    print(d)
     d.to_csv(r"C:\Users\JoshL\Desktop\results1.csv")
 
 

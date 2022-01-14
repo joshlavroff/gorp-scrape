@@ -12,19 +12,16 @@ def getAvgPrice(keyword):
     driver=webdriver.Chrome(service=ser,options=chrome_options)
     driver.get(url)
 
-    try:
-        searchBox = driver.find_element(By.CLASS_NAME, "Search-module__input___NFsRw")
-        searchButton = driver.find_element(By.XPATH, "//*[contains(text(),'Search')]")
-        action = ActionChains(driver)
-        action.click().perform()
-        action.click().perform()
-        searchBox.send_keys(keyword)
-        action.move_to_element(searchButton).click().perform()
-        driver.implicitly_wait(1)
+    searchBox = driver.find_element(By.CLASS_NAME, "Search-module__input___NFsRw")
+    searchButton = driver.find_element(By.XPATH, "//*[contains(text(),'Search')]")
+    action = ActionChains(driver)
+    action.click().perform()
+    action.click().perform()
+    searchBox.send_keys(keyword)
+    action.move_to_element(searchButton).click().perform()
+    driver.implicitly_wait(1)
 
 
-    except:
-        driver.quit()
 
     time.sleep(1)
     pri=driver.find_elements(By.XPATH,"//*[contains(text(),'$')]")
