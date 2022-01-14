@@ -1,6 +1,7 @@
 import requests
 import sys
 import priceEstimate
+import pandas as pd
 import trim
 from PyQt5.QtWidgets import QLineEdit,QComboBox,QGridLayout,QLabel,QApplication,QWidget, QPushButton, QProgressBar, \
     QTextBrowser
@@ -16,6 +17,10 @@ def search():
         sizes[i]=sizes[i][0]
     category = cat.currentText().lower()
     pagen=1
+    na=[]
+    si=[]
+    pr= []
+    lp=[]
     while pagen<10:
         URL="https://www.geartrade.com/clothing/mens-clothing/mens-"+category+"?searchTerm="+keyword.replace(" ","+")+"&sort=new&page="+str(pagen)
         page=requests.get(URL)
@@ -32,6 +37,10 @@ def search():
                 item_size=piece.find("div",class_="product-card__brand").text
                 if str(item_size[1]).lower() in sizes:
                     item_link=links[c]
+                    na.append(item_name.strip())
+                    si.append(item_size.strip())
+                    pr.append(item_price.strip())
+                    lp.append(priceEstimate.getAvgPrice(item_name))
                     res.append("<a href="+item_link+">"+item_name.strip()+"</a>")
                     res.append(item_price.strip())
                     res.append(item_size.strip())
@@ -42,6 +51,11 @@ def search():
             c+=1
         pagen+=1
         pro.setValue(pagen)
+    data = {"Name": na, "Size": si, "Price": pr, "Average List Price": lp}
+    print(data)
+    d=pd.DataFrame(data)
+    print(d)
+    d.to_csv(r"C:\Users\JoshL\Desktop\results1.csv")
 
 
 
