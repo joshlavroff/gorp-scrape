@@ -1,12 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.service import Service
-from selenium.common.exceptions import NoSuchElementException
 import time
+import trim
 def getAvgPrice(keyword):
     url="https://www.grailed.com/shop"
 
@@ -33,7 +30,8 @@ def getAvgPrice(keyword):
     pri=driver.find_elements(By.XPATH,"//*[contains(text(),'$')]")
     total=0
     for i in range(2,len(pri)-2):
-        total+=float(pri[i].text[1:])
+        if " " not in pri[i].text:
+            total+=float(trim.trimStr(pri[i].text[1:]))
     avg=round(total/(len(pri)-3),2)
     return avg
 
@@ -53,3 +51,5 @@ def checkSoldListings(driver,action):
 
     except:
         driver.close()
+
+#getAvgPrice("arcteryx")

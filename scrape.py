@@ -1,28 +1,15 @@
 import requests
 import sys
+import priceEstimate
+import trim
 from PyQt5.QtWidgets import QLineEdit,QComboBox,QGridLayout,QLabel,QApplication,QWidget, QPushButton, QProgressBar, \
     QTextBrowser
 from PyQt5 import QtGui
 from bs4 import BeautifulSoup
 
 
-def trim(s):
-    """Trims given str down to alphanumeric characters"""
-    trimmed=""
-    for st in s:
-        if st.isalnum() or st==" ":
-            trimmed+=st.lower()
-    return trimmed
-
-def parsePrice(p):
-    """Parses str p, which is formatted as $(price)/n, into a float"""
-    price=float(p[2:-1])
-    return price
-
-
-
 def search():
-    keyword = trim(key.text())
+    keyword = trim.trimStr(key.text())
     max_price = float(pri.text())
     sizes =siz.text().lower().split(",")
     for i in range(len(sizes)):
@@ -41,7 +28,7 @@ def search():
         for piece in names:
             item_name=piece.find("div",class_="product-card__name").text
             item_price=str(piece.find("div",class_="product-card__price").text)
-            if parsePrice(item_price)<=max_price:
+            if trim.parsePrice(item_price)<=max_price:
                 item_size=piece.find("div",class_="product-card__brand").text
                 if str(item_size[1]).lower() in sizes:
                     item_link=links[c]
